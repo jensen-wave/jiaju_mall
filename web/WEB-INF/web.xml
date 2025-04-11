@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <!-- 过滤器一般配置在上面 -->
+    <filter>
+        <!-- 定义过滤器名称 -->
+        <filter-name>AuthFilter</filter-name>
+
+        <!-- 过滤器的实现类，必须是 `javax.servlet.Filter` 接口的实现 -->
+        <filter-class>com.hspedu.furns.filter.AuthFilter</filter-class>
+
+        <!-- 配置初始化参数（init-param），用于指定不需要过滤的 URL -->
+        <init-param>
+            <!-- 这里配置了后，还需要在 `AuthFilter` 代码中处理 `excludedUrls` 逻辑 -->
+            <param-name>excludedUrls</param-name>
+
+            <!-- 这里定义了无需拦截的 URL，多个 URL 之间用逗号分隔 -->
+            <param-value>/views/manage/manage_login.jsp,/views/member/login.jsp</param-value>
+        </init-param>
+    </filter>
+
+    <!-- 配置 `AuthFilter` 作用的 URL 规则 -->
+    <filter-mapping>
+        <!-- 关联 `AuthFilter` 过滤器 -->
+        <filter-name>AuthFilter</filter-name>
+
+        <!--
+            需要进行身份验证的 URL（受 `Filter` 保护的资源）
+            1. 这里配置的 URL 模式将会被 `AuthFilter` 过滤
+            2. 对于我们不需要拦截的 URL，就不在这里配置
+            3. 如果某些目录下的特定资源需要放行，可以通过 `init-param` 配置（如 `excludedUrls`）
+        -->
+
+        <!-- 需要拦截的 URL 目录（所有该路径下的请求都会经过 `AuthFilter`） -->
+        <url-pattern>/views/cart/*</url-pattern>        <!-- 购物车相关资源 -->
+        <url-pattern>/views/manage/*</url-pattern>      <!-- 后台管理相关资源 -->
+        <url-pattern>/views/member/*</url-pattern>      <!-- 会员相关资源 -->
+        <url-pattern>/views/order/*</url-pattern>       <!-- 订单相关资源 -->
+
+        <!-- 需要拦截的具体 Servlet 请求 -->
+        <url-pattern>/cartServlet</url-pattern>         <!-- 购物车 Servlet -->
+        <url-pattern>/manage/furnServlet</url-pattern>  <!-- 管理商品的 Servlet -->
+        <url-pattern>/orderServlet</url-pattern>        <!-- 订单 Servlet -->
+    </filter-mapping>
+
+<filter>
+    <filter-name>TransactionFilter</filter-name>
+    <filter-class>com.hspedu.furns.filter.TransactionFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>TransactionFilter</filter-name>
+    <!--这里我们对请求都进行事务管理-->
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+
+
+
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+        <servlet-class>com.hspedu.furns.web.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+        <url-pattern>/registerServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.hspedu.furns.web.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/loginServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>MemberServlet</servlet-name>
+        <servlet-class>com.hspedu.furns.web.MemberServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MemberServlet</servlet-name>
+        <url-pattern>/memberServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FurnServlet</servlet-name>
+        <servlet-class>com.hspedu.furns.web.FurnServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FurnServlet</servlet-name>
+        <url-pattern>/manage/furnServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.hspedu.furns.web.AdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/adminServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>CustomerFurnServlet</servlet-name>
+        <servlet-class>com.hspedu.furns.web.CustomerFurnServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomerFurnServlet</servlet-name>
+        <url-pattern>/customerFurnServlet</url-pattern>
+    </servlet-mapping>
+
+    <!--配置KaptchaServlet-->
+    <servlet>
+        <servlet-name>KaptchaServlet</servlet-name>
+        <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>KaptchaServlet</servlet-name>
+        <url-pattern>/kaptchaServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>com.hspedu.furns.web.CartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cartServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.hspedu.furns.web.OrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/orderServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- 404 錯誤頁面 (找不到資源) -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/views/error/404.jsp</location>
+    </error-page>
+    <!-- 500 錯誤頁面 (伺服器內部錯誤) -->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/views/error/500.jsp</location>
+    </error-page>
+
+
+
+
+</web-app>
