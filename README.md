@@ -79,7 +79,7 @@ jiaju_mall/
 
 ---
 
-## ⚙ 環境部署與啟動
+## 環境部署與啟動
 
 1. 將專案匯入 IntelliJ IDEA
 2. 配置 MySQL，修改 `src/druid.properties` 中的帳密與連線資訊
