@@ -90,16 +90,6 @@ jiaju_mall/
 ---
 
 
-##  延伸與擴充建議
-
--  整合 Spring Boot 將結構模組化與簡化配置
--  改用 Thymeleaf/Spring MVC 取代 JSP 渲染
--  導入 Redis 儲存購物車資料（Session 解耦）
--  加入 JWT 權限控管與 API 分層
--  部署至 Railway / Render 
-
----
-
 
 ##  資料表與 ER 圖
 
